@@ -1,0 +1,116 @@
+USER@HOST ~/src/ICA0002 $ ansible-playbook -i lab1/inventory ssh.yml --ask-pass
+SSH password: 
+
+PLAY [ubuntu] ************************************************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************************
+ok: [127.0.0.1]
+
+TASK [Manage keys] *******************************************************************************************************************
+changed: [127.0.0.1]
+
+PLAY RECAP ***************************************************************************************************************************
+127.0.0.1                  : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
+USER@HOST ~/src/ICA0002 $ ansible -i lab1/inventory -m ping ubuntu -u ryan 2>/dev/null            
+127.0.0.1 | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+USER@HOST ~/src/ICA0002 $ ansible -i lab1/inventory -m shell ubuntu -u ryan -a 'ps -e' 2>/dev/null
+127.0.0.1 | CHANGED | rc=0 >>
+  PID TTY          TIME CMD
+    1 ?        00:00:01 systemd
+    2 ?        00:00:00 kthreadd
+    4 ?        00:00:00 kworker/0:0H
+    6 ?        00:00:00 mm_percpu_wq
+    7 ?        00:00:00 ksoftirqd/0
+    8 ?        00:00:01 rcu_sched
+    9 ?        00:00:00 rcu_bh
+   10 ?        00:00:00 migration/0
+   11 ?        00:00:00 watchdog/0
+   12 ?        00:00:00 cpuhp/0
+   13 ?        00:00:00 kdevtmpfs
+   14 ?        00:00:00 netns
+   15 ?        00:00:00 rcu_tasks_kthre
+   16 ?        00:00:00 kauditd
+   17 ?        00:00:00 khungtaskd
+   18 ?        00:00:00 oom_reaper
+   19 ?        00:00:00 writeback
+   20 ?        00:00:00 kcompactd0
+   21 ?        00:00:00 ksmd
+   22 ?        00:00:00 khugepaged
+   23 ?        00:00:00 crypto
+   24 ?        00:00:00 kintegrityd
+   25 ?        00:00:00 kblockd
+   26 ?        00:00:00 ata_sff
+   27 ?        00:00:00 md
+   28 ?        00:00:00 edac-poller
+   29 ?        00:00:00 devfreq_wq
+   30 ?        00:00:00 watchdogd
+   32 ?        00:00:00 kworker/0:1
+   34 ?        00:00:00 kswapd0
+   35 ?        00:00:00 kworker/u3:0
+   36 ?        00:00:00 ecryptfs-kthrea
+   78 ?        00:00:00 kthrotld
+   79 ?        00:00:00 acpi_thermal_pm
+   80 ?        00:00:00 scsi_eh_0
+   81 ?        00:00:00 scsi_tmf_0
+   82 ?        00:00:00 scsi_eh_1
+   83 ?        00:00:00 scsi_tmf_1
+   89 ?        00:00:00 ipv6_addrconf
+   98 ?        00:00:00 kstrp
+  115 ?        00:00:00 charger_manager
+  153 ?        00:00:02 kworker/0:2
+  171 ?        00:00:00 kworker/0:1H
+  195 ?        00:00:00 scsi_eh_2
+  196 ?        00:00:00 scsi_tmf_2
+  197 ?        00:00:00 ttm_swap
+  198 ?        00:00:00 irq/18-vmwgfx
+  266 ?        00:00:00 raid5wq
+  318 ?        00:00:00 jbd2/sda2-8
+  319 ?        00:00:00 ext4-rsv-conver
+  397 ?        00:00:00 systemd-journal
+  405 ?        00:00:00 iscsi_eh
+  406 ?        00:00:00 lvmetad
+  407 ?        00:00:00 ib-comp-wq
+  408 ?        00:00:00 ib_mcast
+  409 ?        00:00:00 ib_nl_sa_wq
+  412 ?        00:00:00 rdma_cm
+  416 ?        00:00:01 systemd-udevd
+  428 ?        00:00:00 loop0
+  447 ?        00:00:00 systemd-timesyn
+  480 ?        00:00:00 iprt-VBoxWQueue
+  666 ?        00:00:00 systemd-network
+  688 ?        00:00:00 systemd-resolve
+  773 ?        00:00:00 atd
+  774 ?        00:00:00 accounts-daemon
+  785 ?        00:00:00 lxcfs
+  851 ?        00:00:00 networkd-dispat
+  860 ?        00:00:00 rsyslogd
+  864 ?        00:00:00 dbus-daemon
+  930 ?        00:00:00 systemd-logind
+  946 ?        00:00:00 cron
+  954 ?        00:00:00 sshd
+  988 ?        00:00:00 polkitd
+ 1006 ?        00:00:00 unattended-upgr
+ 1796 ?        00:00:00 systemd
+ 1807 ?        00:00:00 (sd-pam)
+ 1907 ?        00:00:00 loop1
+ 1936 ?        00:00:01 snapd
+ 2727 ?        00:00:00 kworker/u2:0
+ 2740 ?        00:00:00 kworker/u2:2
+ 2748 ?        00:00:00 sshd
+ 2814 ?        00:00:00 sshd
+ 3292 ?        00:00:00 kworker/u2:1
+ 3448 tty2     00:00:00 agetty
+ 3452 tty1     00:00:00 agetty
+ 3496 pts/0    00:00:00 sh
+ 3497 pts/0    00:00:00 python
+ 3499 pts/0    00:00:00 sh
+ 3500 pts/0    00:00:00 ps
+
+USER@HOST ~/src/ICA0002 $ 
