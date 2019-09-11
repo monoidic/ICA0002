@@ -1,7 +1,0 @@
-- hosts: ubuntu
-  remote_user: ryan
-  tasks:
-  - name: Manage keys
-    authorized_key:
-      user: ryan
-      key: https://raw.githubusercontent.com/monoidic/pubkey/master/cert_25519.pub

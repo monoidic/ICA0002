@@ -1,0 +1,52 @@
+---
+- name: Lab 2 playbook
+  hosts: ubuntu
+  remote_user: user
+  become: yes
+  tasks:
+  - name: Add ssh cert
+    authorized_key:
+      user: user
+      key: https://raw.githubusercontent.com/monoidic/pubkey/master/cert_25519.pub
+
+  - name: Generate keys for user
+    user:
+      name: user
+      generate_ssh_key: yes
+
+  - name: Add passwordless sudo conf file
+    copy:
+      content: "%adm ALL=(ALL:ALL) NOPASSWD:ALL"
+      dest: /etc/sudoers.d/admin_nopass
+      mode: '0600'
+
+  - name: Create sysadmins group
+    group:
+      name: sysadmins
+
+  - name: Add romankuchin user
+    user:
+      name: romankuchin
+      groups: sysadmins
+  - name: Add hudolejev user
+    user:
+      name: hudolejev
+      groups: sysadmins
+
+  - name: Add romankuchin key
+    authorized_key:
+      user: romankuchin
+      key: https://github.com/romankuchin.keys
+
+  - name: Add hudolejev key
+    authorized_key:
+      user: hudolejev
+      key: https://github.com/hudolejev.keys
+
+  - name: Get list of processes
+    shell: "ps -e"
+    register: procs
+
+  - name: List processes
+    debug: 
+      var: procs.stdout_lines
