@@ -1,0 +1,59 @@
+---
+- name: Lab 3 playbook
+  hosts: ubuntu
+  remote_user: user
+  become: yes
+  tasks:
+  - name: Add ssh cert
+    authorized_key:
+      user: user
+      key: https://raw.githubusercontent.com/monoidic/pubkey/master/cert_25519.pub
+
+  - name: Add passwordless sudo conf file
+    copy:
+      content: "%adm ALL=(ALL:ALL) NOPASSWD:ALL"
+      dest: /etc/sudoers.d/admin_nopass
+      mode: '0600'
+
+  - name: Install required packages
+    apt:
+      name: "{{ packages }}"
+    vars:
+      packages:
+      -  apache2
+      -  libapache2-mod-php
+
+  - name: Listen on port 8080
+    lineinfile:
+      path: /etc/apache2/ports.conf
+#      firstmatch: yes
+      insertafter: "^Listen 80$"
+      line: Listen 8080
+
+  - name: Create root directory for info
+    file:
+      path: /var/www/info
+      state: directory
+
+  - name: Add info page
+    copy:
+      content: "<?php phpinfo(); ?>"
+      dest: /var/www/info/index.php
+      mode: '0644'
+
+  - name: Add virtual host for info page
+    copy:
+      src: files/info.conf
+      dest: /etc/apache2/sites-available/info.conf
+      mode: '0644'
+
+  - name: Enable info page
+    file:
+      path: /etc/apache2/sites-enabled/info.conf
+      state: link
+      src: /etc/apache2/sites-available/info.conf
+
+  - name: Reload apache
+    service:
+      name: apache2
+      state: reloaded
