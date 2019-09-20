@@ -1,24 +1,14 @@
 ---
+- import_playbook: ../auth/auth.yaml
 - name: Lab 2 playbook
   hosts: ubuntu
   remote_user: user
   become: yes
   tasks:
-  - name: Add ssh cert
-    authorized_key:
-      user: user
-      key: https://raw.githubusercontent.com/monoidic/pubkey/master/cert_25519.pub
-
   - name: Generate keys for user
     user:
       name: user
       generate_ssh_key: yes
-
-  - name: Add passwordless sudo conf file
-    copy:
-      content: "%adm ALL=(ALL:ALL) NOPASSWD:ALL"
-      dest: /etc/sudoers.d/admin_nopass
-      mode: '0600'
 
   - name: Create sysadmins group
     group:
@@ -27,11 +17,14 @@
   - name: Add romankuchin user
     user:
       name: romankuchin
-      groups: sysadmins
+      append: yes
+      groups: sysadmins,adm
+
   - name: Add hudolejev user
     user:
       name: hudolejev
-      groups: sysadmins
+      append: yes
+      groups: sysadmins,adm
 
   - name: Add romankuchin key
     authorized_key:

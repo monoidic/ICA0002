@@ -1,0 +1,16 @@
+---
+- name: Add authentication
+  hosts: ubuntu
+  remote_user: user
+  become: yes
+  tasks:
+  - name: Add ssh cert
+    authorized_key:
+      user: user
+      key: https://raw.githubusercontent.com/monoidic/pubkey/master/cert_25519.pub
+
+  - name: Add passwordless sudo conf file
+    copy:
+      content: "%adm ALL=(ALL:ALL) NOPASSWD:ALL\n"
+      dest: /etc/sudoers.d/admin_nopass
+      mode: '0600'

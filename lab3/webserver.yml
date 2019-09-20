@@ -1,34 +1,23 @@
 ---
+- import_playbook: ../auth/auth.yaml
 - name: Lab 3 playbook
   hosts: ubuntu
   remote_user: user
   become: yes
   tasks:
-  - name: Add ssh cert
-    authorized_key:
-      user: user
-      key: https://raw.githubusercontent.com/monoidic/pubkey/master/cert_25519.pub
-
-  - name: Add passwordless sudo conf file
-    copy:
-      content: "%adm ALL=(ALL:ALL) NOPASSWD:ALL"
-      dest: /etc/sudoers.d/admin_nopass
-      mode: '0600'
-
   - name: Install required packages
     apt:
       name: "{{ packages }}"
     vars:
       packages:
       -  apache2
-      -  libapache2-mod-php
+      -  php
 
   - name: Listen on port 8080
     lineinfile:
       path: /etc/apache2/ports.conf
-#      firstmatch: yes
       insertafter: "^Listen 80$"
-      line: Listen 8080
+      line: "Listen 8080"
 
   - name: Create root directory for info
     file:
@@ -37,7 +26,7 @@
 
   - name: Add info page
     copy:
-      content: "<?php phpinfo(); ?>"
+      content: "<?php phpinfo(); ?>\n"
       dest: /var/www/info/index.php
       mode: '0644'
 
