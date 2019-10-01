@@ -1,0 +1,5 @@
+[frontend]
+web1 ansible_host=127.0.0.1 ansible_port=20022
+
+[database]
+db1 ansible_host=127.0.0.1 ansible_port=20022

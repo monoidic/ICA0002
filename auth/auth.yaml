@@ -1,6 +1,6 @@
 ---
 - name: Add authentication
-  hosts: ubuntu
+  hosts: all
   remote_user: user
   become: yes
   tasks:
@@ -14,3 +14,5 @@
       content: "%adm ALL=(ALL:ALL) NOPASSWD:ALL\n"
       dest: /etc/sudoers.d/admin_nopass
       mode: '0600'
+      owner: root
+      group: root

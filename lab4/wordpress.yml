@@ -1,0 +1,85 @@
+---
+- import_playbook: ../auth/auth.yaml
+
+- name: Lab 4 playbook - Web server
+  hosts: frontend
+  remote_user: user
+  become: yes
+
+  vars_files:
+    - files/vars.yml
+
+  tasks:
+  - name: Install required packages
+    apt:
+      name: "{{ packages }}"
+    vars:
+      packages:
+      -  apache2
+      -  php
+      -  mysql-client
+      -  php-mysql
+      -  wordpress
+
+  - name: Add apache site conf for WordPress
+    copy:
+      src: files/wordpress.conf
+      dest: /etc/apache2/sites-available/wordpress.conf
+      mode: '0644'
+
+  - name: Add WordPress conf file
+    template:
+      src: files/config-localhost.php
+      dest: /etc/wordpress/config-127.0.0.1.php
+      owner: www-data
+      group: www-data
+      mode: '0400'
+
+  - name: Disable default site
+    file:
+      path: /etc/apache2/sites-enabled/000-default.conf
+      state: absent
+
+  - name: Enable info page
+    file:
+      path: /etc/apache2/sites-enabled/info.conf
+      state: link
+      src: /etc/apache2/sites-available/info.conf
+
+  - name: Enable WordPress
+    file:
+      path: /etc/apache2/sites-enabled/wordpress.conf
+      state: link
+      src: /etc/apache2/sites-available/wordpress.conf
+
+  - name: Reload apache
+    service:
+      name: apache2
+      state: reloaded
+
+- name: Lab 4 playbook - SQL server
+  hosts: database
+  remote_user: user
+  become: yes
+  vars_files:
+    - files/vars.yml
+  tasks:
+  - name: Install packages
+    apt:
+      name: "{{ packages }}"
+    vars:
+      packages:
+      -  mysql-server
+      -  python-pymysql
+
+  - name: Create WordPress database
+    mysql_db:
+      name: wordpress
+      config_file: /etc/mysql/debian.cnf
+
+  - name: Add WordPress SQL user
+    mysql_user:
+      name: wordpress
+      password: "{{ sql_pass }}"
+      priv: "wordpress.*:SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,ALTER"
+      config_file: /etc/mysql/debian.cnf
