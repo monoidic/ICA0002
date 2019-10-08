@@ -1,0 +1,64 @@
+---
+- import_playbook: ../auth/auth.yaml
+
+- name: Network setup
+  hosts: all
+  remote_user: user
+  become: yes
+  tasks:
+  - name: Configure netplan
+    template:
+      src: files/netplan.yaml
+      dest: /etc/netplan/50-static-vbox.yaml
+    notify:
+    - netplan apply
+
+  handlers:
+  - name:  netplan apply
+    shell: netplan apply
+
+- name: Set up bind9
+  hosts: all
+  remote_user: user
+  become: yes
+  tasks:
+  - name: Install bind
+    apt:
+      name: bind9
+
+  - name: Configure bind options config
+    template:
+      src: files/named.conf.options.j2
+      dest: /etc/bind/named.conf.options
+    notify:
+    - check bind conf
+    - restart bind
+
+  - name: Configure bind local config
+    template:
+      src: files/named.conf.local.j2
+      dest: /etc/bind/named.conf.local
+    notify:
+    - check bind conf
+    - restart bind
+
+  - name: Configure database
+    when: dns_role == "master"
+    template:
+      src: files/db.peril
+      dest: /etc/bind/db.peril
+    notify:
+    - bind update
+    - check bind conf
+
+  handlers:
+  - name:  check bind conf
+    shell: named-checkconf
+
+  - name: restart bind
+    service:
+      name: bind9
+      state: restarted
+
+  - name: bind update
+    shell: rndc reload

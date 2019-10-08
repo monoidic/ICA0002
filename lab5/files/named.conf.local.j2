@@ -1,0 +1,10 @@
+zone "peril.ttu" {
+	type {{ dns_role }};
+{% if dns_role == "master" %}
+	file "/etc/bind/db.peril";
+	allow-transfer { {{ slave_ip }}; };
+{% else %}
+	file "/var/lib/bind/db.peril";
+	masters { {{ master_ip }}; };
+{% endif %}
+};

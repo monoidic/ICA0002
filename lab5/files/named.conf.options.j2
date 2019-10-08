@@ -1,0 +1,17 @@
+acl allowed_nets {
+{% for net in allowed_nets %}
+	{{ net }};
+{% endfor %}
+};
+
+options {
+	directory "/var/cache/bind";
+	forwarders {
+	{% for addr in forwarders %}
+		{{ addr }};
+	{% endfor %}
+	};
+	dnssec-validation auto;
+	auth-nxdomain no;    # conform to RFC1305
+	listen-on-v6 { any; };
+};

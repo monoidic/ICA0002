@@ -1,0 +1,4 @@
+---
+dns_role: master
+slave_ip: 192.168.56.51
+static_ip: 192.168.56.50

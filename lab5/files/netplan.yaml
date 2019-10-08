@@ -1,0 +1,6 @@
+network:
+  version: 2
+  ethernets:
+    enp0s8:
+      addresses:
+        - {{ static_ip }}/24

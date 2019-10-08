@@ -1,0 +1,18 @@
+$TTL	604800
+@	IN	SOA	peril.ttu. root.peril.ttu. (
+			      1		; Serial
+			 604800		; Refresh
+			  86400		; Retry
+			2419200		; Expire
+			 604800	)	; Negative Cache TTL
+;
+peril.ttu.		IN	NS	ns.peril.ttu.
+
+infra01.peril.ttu.	IN	A	192.168.56.50
+infra02.peril.ttu.	IN	A	192.168.56.51
+
+ns1.peril.ttu.		IN	CNAME	infra01.peril.ttu.
+ns2.peril.ttu.		IN	CNAME	infra02.peril.ttu.
+
+ns.peril.ttu.		IN	A	192.168.56.50
+ns.peril.ttu.		IN	A	192.168.56.51
