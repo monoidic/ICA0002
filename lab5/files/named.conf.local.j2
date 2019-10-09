@@ -3,8 +3,21 @@ zone "peril.ttu" {
 {% if dns_role == "master" %}
 	file "/etc/bind/db.peril";
 	allow-transfer { {{ slave_ip }}; };
+	notify yes;
 {% else %}
 	file "/var/lib/bind/db.peril";
+	masters { {{ master_ip }}; };
+{% endif %}
+};
+
+zone "56.168.192.in-addr.arpa" {
+	type {{ dns_role }};
+{% if dns_role == "master" %}
+	file "/etc/bind/db.peril.ptr";
+	allow-transfer { {{ slave_ip }}; };
+	notify yes;
+{% else %}
+	file "/var/lib/bind/db.peril.ptr";
 	masters { {{ master_ip }}; };
 {% endif %}
 };

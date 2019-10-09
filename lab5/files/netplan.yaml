@@ -3,4 +3,4 @@ network:
   ethernets:
     enp0s8:
       addresses:
-        - {{ static_ip }}/24
+        - {{ ansible_host }}/24

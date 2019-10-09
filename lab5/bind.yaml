@@ -42,18 +42,41 @@
     - check bind conf
     - restart bind
 
-  - name: Configure database
+  - name: Update db hash
     when: dns_role == "master"
-    template:
-      src: files/db.peril
-      dest: /etc/bind/db.peril
+    copy:
+      content: "{{ dns_vars|hash }}"
+      dest: /etc/bind/db.peril.hash
     notify:
-    - bind update
+    - timestamp
     - check bind conf
+    - db update
+    - ptr db update
+    - bind update
 
   handlers:
+  - name: timestamp
+    shell: date +%s
+    register: ts
+
   - name:  check bind conf
     shell: named-checkconf
+
+  - name: db update
+    template:
+      src: files/db.peril.j2
+      dest: /etc/bind/db.peril
+
+  - name: ptr db update
+    template:
+      src: files/db.peril.ptr.j2
+      dest: /etc/bind/db.peril.ptr
+
+  - name: check zone conf
+    shell: "named-checkzone peril.ttu. /etc/bind/db.peril"
+
+  - name: check reverse zone conf
+    shell: "named-checkzone peril.ttu. /etc/bind/db.peril.ptr"
 
   - name: restart bind
     service:
