@@ -53,6 +53,8 @@
     - db update
     - ptr db update
     - bind update
+    - check zone conf
+    - check reverse zone conf
 
   handlers:
   - name: timestamp
@@ -73,10 +75,10 @@
       dest: /etc/bind/db.peril.ptr
 
   - name: check zone conf
-    shell: "named-checkzone peril.ttu. /etc/bind/db.peril"
+    shell: named-checkzone peril.ttu. /etc/bind/db.peril
 
   - name: check reverse zone conf
-    shell: "named-checkzone peril.ttu. /etc/bind/db.peril.ptr"
+    shell: named-checkzone 56.168.192.in-addr.arpa /etc/bind/db.peril.ptr
 
   - name: restart bind
     service:
