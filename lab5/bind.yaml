@@ -1,21 +1,7 @@
 ---
-- import_playbook: ../auth/auth.yaml
+- import_playbook: ../additional/auth.yaml
 
-- name: Network setup
-  hosts: all
-  remote_user: user
-  become: yes
-  tasks:
-  - name: Configure netplan
-    template:
-      src: files/netplan.yaml
-      dest: /etc/netplan/50-static-vbox.yaml
-    notify:
-    - netplan apply
-
-  handlers:
-  - name:  netplan apply
-    shell: netplan apply
+- import_playbook: ../additional/netsetup.yaml
 
 - name: Set up bind9
   hosts: all
@@ -45,7 +31,7 @@
   - name: Update db hash
     when: dns_role == "master"
     copy:
-      content: "{{ dns_vars|hash }}"
+      content: "{{ dns_vars|hash }}\n"
       dest: /etc/bind/db.peril.hash
     notify:
     - timestamp

@@ -1,5 +1,5 @@
 ---
-- import_playbook: ../auth/auth.yaml
+- import_playbook: ../additional/auth.yaml
 
 - name: Lab 4 playbook - Web server
   hosts: frontend

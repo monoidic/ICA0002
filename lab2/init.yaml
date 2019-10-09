@@ -1,5 +1,6 @@
 ---
-- import_playbook: ../auth/auth.yaml
+- import_playbook: ../additional/auth.yaml
+
 - name: Lab 2 playbook
   hosts: ubuntu
   remote_user: user
