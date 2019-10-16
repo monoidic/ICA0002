@@ -1,0 +1,14 @@
+---
+- name: Set up backup agent
+  hosts: infra01
+  remote_user: user
+  become: yes
+  tasks:
+  - name: Add backup user
+    user:
+      name: infra_backup
+      system: yes
+  - name: Allow ssh access
+    authorized_key:
+      key: "{{ lookup('file', '../privstuff/infra02/home/infra_backup/.ssh/id_rsa.pub') }}"
+      user: infra_backup

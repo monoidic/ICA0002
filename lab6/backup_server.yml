@@ -1,0 +1,24 @@
+---
+- name: Set up backup server
+  hosts: infra02
+  remote_user: user
+  become: yes
+  tasks:
+  - name: Add backup user
+    user:
+      name: infra_backup
+      system: yes
+      generate_ssh_key: yes
+
+  - name: Create backup directory
+    file:
+      path: /srv/backup/
+      mode: 0700
+      owner: infra_backup
+      group: infra_backup
+      state: directory
+
+  - name: Fetch backup user pubkey to current host
+    fetch:
+      src: /home/infra_backup/.ssh/id_rsa.pub
+      dest: ../privstuff/
