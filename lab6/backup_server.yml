@@ -1,6 +1,6 @@
 ---
 - name: Set up backup server
-  hosts: infra02
+  hosts: backups
   remote_user: user
   become: yes
   tasks:

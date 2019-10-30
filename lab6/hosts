@@ -1,3 +1,10 @@
-[irrelevant]
-infra01 ansible_host=192.168.56.50
-infra02 ansible_host=192.168.56.51
+[backup]
+agent   ansible_host=192.168.56.50
+backups ansible_host=192.168.56.51
+[dns]
+master  ansible_host=192.168.56.50
+slave   ansible_host=192.168.56.51
+[frontend]
+web1    ansible_host=192.168.56.50
+[database]
+db1     ansible_host=192.168.56.51

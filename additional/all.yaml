@@ -1,0 +1,4 @@
+---
+- import_playbook: ./auth.yaml
+
+- import_playbook: ./netsetup.yaml

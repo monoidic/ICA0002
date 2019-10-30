@@ -1,6 +1,6 @@
 ---
 - name: Set up backup agent
-  hosts: infra01
+  hosts: agent
   remote_user: user
   become: yes
   tasks:

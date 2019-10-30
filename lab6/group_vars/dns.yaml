@@ -1,0 +1,31 @@
+---
+forwarders:
+  - 8.8.8.8
+  - 1.1.1.1
+  - 9.9.9.10
+
+allowed_nets:
+  - 192.168.56.0/24
+  - 10.0.2.0/24
+  - localhost
+
+startup: peril.ttu
+dns_vars:
+  - name: "{{ startup }}."
+    type: NS
+    addr: "ns1.{{ startup}}."
+  - name: "{{ startup }}."
+    type: NS
+    addr: "ns2.{{ startup }}."
+  - name: "infra01.{{ startup }}."
+    type: A
+    addr: 192.168.56.50
+  - name: "infra02.{{ startup }}."
+    type: A
+    addr: 192.168.56.51
+  - name: "ns1.{{ startup }}."
+    type: A
+    addr: 192.168.56.50
+  - name: "ns2.{{ startup }}."
+    type: A
+    addr: 192.168.56.51

@@ -1,8 +1,6 @@
 ---
-- import_playbook: ../additional/all.yaml
-
 - name: Set up bind9
-  hosts: all
+  hosts: dns
   remote_user: user
   become: yes
   tasks:
@@ -27,10 +25,11 @@
     - restart bind
 
   - name: Update db hash
-    when: dns_role == "master"
+#    when: dns_role == "master"
+    when: "inventory_hostname == 'master'"
     copy:
       content: "{{ dns_vars|hash }}\n"
-      dest: /etc/bind/db.peril.hash
+      dest: "/etc/bind/db.{{ startup }}.hash"
     notify:
     - timestamp
     - check bind conf
@@ -50,19 +49,19 @@
 
   - name: db update
     template:
-      src: files/db.peril.j2
-      dest: /etc/bind/db.peril
+      src: files/db.startup.j2
+      dest: "/etc/bind/db.{{ startup }}"
 
   - name: ptr db update
     template:
-      src: files/db.peril.ptr.j2
-      dest: /etc/bind/db.peril.ptr
+      src: files/db.startup.ptr.j2
+      dest: "/etc/bind/db.{{ startup }}.ptr"
 
   - name: check zone conf
-    shell: named-checkzone peril.ttu. /etc/bind/db.peril
+    shell: "named-checkzone {{ startup }}. /etc/bind/db.{{ startup }}"
 
   - name: check reverse zone conf
-    shell: named-checkzone 56.168.192.in-addr.arpa /etc/bind/db.peril.ptr
+    shell: "named-checkzone 56.168.192.in-addr.arpa /etc/bind/db.{{ startup }}.ptr"
 
   - name: restart bind
     service:

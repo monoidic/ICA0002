@@ -1,13 +1,11 @@
 ---
-- import_playbook: ../additional/auth.yaml
-
 - name: Lab 4 playbook - Web server
   hosts: frontend
   remote_user: user
   become: yes
 
   vars_files:
-    - files/vars.yml
+    - files/wp_vars.yml
 
   tasks:
   - name: Install required packages
@@ -26,27 +24,36 @@
       src: files/wordpress.conf
       dest: /etc/apache2/sites-available/wordpress.conf
       mode: '0644'
+    notify:
+    - reload wordpress
 
   - name: Add WordPress conf file
     template:
-      src: files/config-localhost.php
-      dest: /etc/wordpress/config-127.0.0.1.php
+      src: files/config-sql.php
+      dest: '/etc/wordpress/config-{{ ansible_host }}.php'
       owner: www-data
       group: www-data
       mode: '0400'
+    notify:
+    - reload wordpress
 
   - name: Disable default site
     file:
       path: /etc/apache2/sites-enabled/000-default.conf
       state: absent
+    notify:
+    - reload wordpress
 
   - name: Enable WordPress
     file:
       path: /etc/apache2/sites-enabled/wordpress.conf
       state: link
       src: /etc/apache2/sites-available/wordpress.conf
+    notify:
+    - reload wordpress
 
-  - name: Reload apache
+  handlers:
+  - name: reload apache
     service:
       name: apache2
       state: reloaded
@@ -56,7 +63,7 @@
   remote_user: user
   become: yes
   vars_files:
-    - files/vars.yml
+    - files/wp_vars.yml
   tasks:
   - name: Install packages
     apt:
@@ -75,5 +82,20 @@
     mysql_user:
       name: wordpress
       password: "{{ sql_pass }}"
+      host: "{{ web_host }}"
       priv: "wordpress.*:SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,ALTER"
       config_file: /etc/mysql/debian.cnf
+
+  - name: Allow external MySQL connections
+    replace:
+      path: /etc/mysql/mysql.conf.d/mysqld.cnf
+      regexp: '^(bind-address.*)'
+      replace: '# \1'
+    notify:
+    - restart mysqld
+
+  handlers:
+  - name: restart mysqld
+    service:
+      name: mysql
+      state: restarted
