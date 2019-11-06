@@ -1,0 +1,21 @@
+---
+- name: Set up DNS servers
+  hosts: dns
+  remote_user: user
+  become: yes
+  roles:
+  - dns
+
+- name: Nodes
+  hosts: linux
+  remote_user: user
+  become: yes
+  roles:
+  - node
+
+- name: Prometheus
+  hosts: prometheus
+  remote_user: user
+  become: yes
+  roles:
+  - prometheus

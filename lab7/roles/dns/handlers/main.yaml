@@ -1,0 +1,30 @@
+- name: timestamp
+  shell: date +%s
+  register: ts
+
+- name:  check bind conf
+  shell: named-checkconf
+
+- name: db update
+  template:
+    src: db.startup.j2
+    dest: "/etc/bind/db.{{ startup }}"
+
+- name: ptr db update
+  template:
+    src: db.startup.ptr.j2
+    dest: "/etc/bind/db.{{ startup }}.ptr"
+
+- name: check zone conf
+  shell: "named-checkzone {{ startup }}. /etc/bind/db.{{ startup }}"
+
+- name: check reverse zone conf
+  shell: "named-checkzone 56.168.192.in-addr.arpa /etc/bind/db.{{ startup }}.ptr"
+
+- name: restart bind
+  service:
+    name: bind9
+    state: restarted
+
+- name: bind update
+  shell: rndc reload

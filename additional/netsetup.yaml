@@ -19,7 +19,7 @@
 
   - name: Configure DNS
     copy:
-      content: "nameserver 127.0.0.53\nnameserver 1.0.0.1\n"
+      content: "nameserver 192.168.56.50\nnameserver 1.0.0.1\n"
       dest: /etc/resolv.conf
 
   handlers:

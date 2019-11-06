@@ -1,0 +1,36 @@
+---
+
+- name: Install bind
+  apt:
+    name: bind9
+
+- name: Configure bind options config
+  template:
+    src: named.conf.options.j2
+    dest: /etc/bind/named.conf.options
+  notify:
+  - check bind conf
+  - restart bind
+
+- name: Configure bind local config
+  template:
+    src: named.conf.local.j2
+    dest: /etc/bind/named.conf.local
+  notify:
+  - check bind conf
+  - restart bind
+
+- name: Update db hash
+#    when: dns_role == "master"
+  when: "inventory_hostname == 'master'"
+  copy:
+    content: "{{ dns_vars|hash }}\n"
+    dest: "/etc/bind/db.{{ startup }}.hash"
+  notify:
+  - timestamp
+  - check bind conf
+  - db update
+  - ptr db update
+  - bind update
+  - check zone conf
+  - check reverse zone conf

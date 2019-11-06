@@ -1,0 +1,4 @@
+---
+dns_hosts:
+- infra01.peril.ttu
+- infra02.peril.ttu
