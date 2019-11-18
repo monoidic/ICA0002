@@ -1,8 +1,12 @@
 ---
 
-- name: Install bind
+- name: Install bind packages
   apt:
-    name: bind9
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - bind9
+    - prometheus-bind-exporter
 
 - name: Configure bind options config
   template:
@@ -21,7 +25,6 @@
   - restart bind
 
 - name: Update db hash
-#    when: dns_role == "master"
   when: "inventory_hostname == 'master'"
   copy:
     content: "{{ dns_vars|hash }}\n"

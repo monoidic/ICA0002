@@ -19,3 +19,24 @@
   become: yes
   roles:
   - prometheus
+
+- name: Wordpress
+  hosts: web1
+  remote_user: user
+  become: yes
+  roles:
+  - wordpress
+
+- name: MySQL
+  hosts: db1
+  remote_user: user
+  become: yes
+  roles:
+  - mysql
+
+- name: Grafana
+  hosts: infra01
+  remote_user: user
+  become: yes
+  roles:
+  - grafana

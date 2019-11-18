@@ -8,3 +8,9 @@ infra02 ansible_host=192.168.56.51
 
 [prometheus]
 infra01 ansible_host=192.168.56.50
+
+[frontend]
+web1    ansible_host=192.168.56.50
+
+[database]
+db1     ansible_host=192.168.56.51

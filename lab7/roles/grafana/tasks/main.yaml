@@ -1,0 +1,19 @@
+---
+- name: Add grafana repo
+  copy:
+    content: "deb https://packages.grafana.com/oss/deb stable main\n"
+    dest: /etc/apt/sources.list.d/grafana.list
+
+- name: Trust grafana repo gpg key
+  apt_key:
+    url: https://packages.grafana.com/gpg.key
+
+- name: Install grafana
+  apt:
+    name: grafana
+
+- name: Run grafana
+  service:
+    name: grafana-server
+    state: started
+    enabled: yes

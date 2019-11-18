@@ -32,3 +32,6 @@ dns_vars:
   - name: "prometheus.{{ startup }}."
     type: CNAME
     addr: "infra01.{{ startup }}."
+  - name: "grafana.{{ startup }}."
+    type: CNAME
+    addr: "infra01.{{ startup }}."
