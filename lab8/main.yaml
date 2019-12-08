@@ -1,0 +1,30 @@
+---
+- name: Set up DNS servers
+  hosts: dns
+  become: yes
+  roles:
+  - dns
+
+- name: Prometheus
+  hosts: prometheus
+  become: yes
+  roles:
+  - prometheus
+
+- name: Grafana
+  hosts: infra01
+  become: yes
+  roles:
+  - grafana
+
+- name: InfluxDB
+  hosts: infra02
+  become: yes
+  roles:
+  - influxdb
+
+- name: Telegraf
+  hosts: infra01
+  become: yes
+  roles:
+  - telegraf

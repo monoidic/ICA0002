@@ -1,0 +1,16 @@
+[dns]
+master  ansible_host=192.168.56.50 ansible_user=user ansible_python_interpreter=/usr/bin/python3
+slave   ansible_host=192.168.56.51 ansible_user=user ansible_python_interpreter=/usr/bin/python3
+
+[linux]
+infra01 ansible_host=192.168.56.50 ansible_user=user ansible_python_interpreter=/usr/bin/python3
+infra02 ansible_host=192.168.56.51 ansible_user=user ansible_python_interpreter=/usr/bin/python3
+
+[prometheus]
+infra01 ansible_host=192.168.56.50 ansible_user=user ansible_python_interpreter=/usr/bin/python3
+
+[frontend]
+web1    ansible_host=192.168.56.50 ansible_user=user ansible_python_interpreter=/usr/bin/python3
+
+[database]
+db1     ansible_host=192.168.56.51 ansible_user=user ansible_python_interpreter=/usr/bin/python3

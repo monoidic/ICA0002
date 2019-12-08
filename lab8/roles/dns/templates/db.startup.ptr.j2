@@ -1,0 +1,15 @@
+$TTL	604800
+@	IN	SOA	peril.ttu. root.peril.ttu. (
+			{{ ts.stdout }}	; Serial
+			 604800		; Refresh
+			  86400		; Retry
+			2419200		; Expire
+			 604800	)	; Negative Cache TTL
+;
+{% for i in dns_vars %}
+{% if i.type == "NS" %}
+@	IN	NS	{{ i.addr }}
+{% elif i.type == "A" %}
+{{ i.addr.split(".")[3] }}	IN	PTR	{{ i.name }}
+{% endif %}
+{% endfor %}
