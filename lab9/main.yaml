@@ -1,0 +1,18 @@
+---
+- name: Set up DNS
+  hosts: dns
+  become: yes
+  roles:
+  - dns
+
+- name: Set up MySQL
+  hosts: mysql
+  become: yes
+  roles:
+  - mysql
+
+- name: Set up Wordpress
+  hosts: wordpress
+  become: yes
+  roles:
+  - wordpress

@@ -1,0 +1,6 @@
+[linux]
+wordpress ansible_host=192.168.56.50 ansible_user=user ansible_python_interpreter=/usr/bin/python3
+mysql     ansible_host=192.168.56.51 ansible_user=user ansible_python_interpreter=/usr/bin/python3
+[dns]
+master    ansible_host=192.168.56.50 ansible_user=user ansible_python_interpreter=/usr/bin/python3
+slave     ansible_host=192.168.56.51 ansible_user=user ansible_python_interpreter=/usr/bin/python3

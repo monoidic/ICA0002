@@ -1,0 +1,50 @@
+---
+- name: Install required packages
+  apt:
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - docker.io
+    - python3-docker
+
+- name: Run wordpress docker image
+  docker_container:
+    image: wordpress
+    name: wp_container
+    ports:
+    - "8080:80"
+
+
+#- name: Add apache site conf for WordPress
+#  template:
+#    src: wordpress.conf
+#    dest: /etc/apache2/sites-available/wordpress.conf
+#    mode: '0644'
+#  notify:
+#  - reload apache
+#
+#- name: Add WordPress conf file
+#  template:
+#    src: config-sql.php
+#    dest: /etc/wordpress/config-default.php
+#    owner: www-data
+#    group: www-data
+#    mode: '0400'
+#  notify:
+#  - reload apache
+#
+#- name: Disable default site
+#  file:
+#    path: /etc/apache2/sites-enabled/000-default.conf
+#    state: absent
+#  notify:
+#  - reload apache
+#
+#- name: Enable WordPress
+#  file:
+#    path: /etc/apache2/sites-enabled/wordpress.conf
+#    state: link
+#    src: /etc/apache2/sites-available/wordpress.conf
+#  notify:
+#  - reload apache
+#
