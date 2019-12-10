@@ -1,0 +1,31 @@
+---
+- name: Set up DNS
+  hosts: dns
+  become: yes
+  roles:
+  - dns
+
+- name: Set up MySQL
+  hosts: mysql
+  become: yes
+  roles:
+  - mysql
+
+- name: Set up Wordpress
+  hosts: web
+  become: yes
+  roles:
+  - wordpress
+
+- name: Set up haproxy
+  hosts: web
+  become: yes
+  roles:
+  - mitm
+
+  post_tasks:
+  - name: Remove unneeded Wordpress containers
+    docker_container:
+      name: 'wp{{item}}'
+      state: absent
+    loop: "{{ range(wp_max_instances-1, wp_instance_count-1, -1) | list }}"
