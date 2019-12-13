@@ -1,0 +1,6 @@
+network:
+  version: 2
+  ethernets:
+    enp0s8:
+      addresses:
+        - {{ new_host }}/24

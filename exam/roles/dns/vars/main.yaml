@@ -32,16 +32,19 @@ dns_vars:
     addr: 192.168.56.51
   - name: prometheus
     type: CNAME
-    addr: infra01
+    addr: infra02
   - name: grafana
     type: CNAME
     addr: infra01
   - name: influxdb
-    type: A
-    addr: 192.168.56.51
+    type: CNAME
+    addr: infra02
   - name: mysql
-    type: A
-    addr: 192.168.56.51
-  - name: web
-    type: A
-    addr: 192.168.56.50
+    type: CNAME
+    addr: infra02
+  - name: www
+    type: CNAME
+    addr: infra02
+  - name: telegraf
+    type: CNAME
+    addr: infra01

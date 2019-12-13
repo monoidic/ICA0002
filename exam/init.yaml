@@ -1,0 +1,6 @@
+---
+- name: Initial setup
+  hosts: legacy
+  become: yes
+  roles:
+  - init

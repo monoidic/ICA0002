@@ -1,0 +1,23 @@
+zone "peril.ttu" {
+	type {{ dns_type }};
+{% if dns_type == "master" %}
+	file "/etc/bind/db.{{ startup }}";
+	allow-transfer { {{ slave_ip }}; };
+	notify yes;
+{% else %}
+	file "/var/lib/bind/db.{{ startup }}";
+	masters { {{ master_ip }}; };
+{% endif %}
+};
+
+zone "56.168.192.in-addr.arpa" {
+	type {{ dns_type }};
+{% if dns_type == "master" %}
+	file "/etc/bind/db.{{ startup }}.ptr";
+	allow-transfer { {{ slave_ip }}; };
+	notify yes;
+{% else %}
+	file "/var/lib/bind/db.{{ startup }}.ptr";
+	masters { {{ master_ip }}; };
+{% endif %}
+};

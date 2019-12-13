@@ -1,0 +1,31 @@
+- name: timestamp
+  shell: date +%s
+  register: ts
+
+#- name:  check bind conf
+#  shell: named-checkconf
+
+- name: db update
+  template:
+    src: db.startup.j2
+    dest: "/etc/bind/db.{{ startup }}"
+    validate: 'named-checkzone {{ startup }}. %s'
+
+- name: ptr db update
+  template:
+    src: db.startup.ptr.j2
+    dest: "/etc/bind/db.{{ startup }}.ptr"
+    validate: 'named-checkzone 56.168.192.in-addr.arpa %s'
+
+- name: bind update
+  shell: rndc reload
+
+- name: restart bind
+  service:
+    name: bind9
+    state: restarted
+
+- name: restart exporter
+  service:
+    name: prometheus-bind-exporter
+    state: restarted

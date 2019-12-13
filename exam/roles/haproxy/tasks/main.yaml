@@ -1,0 +1,45 @@
+---
+- name: Install haproxy
+  apt:
+    name: haproxy
+
+- name: Configure haproxy
+  template:
+    src: haproxy.cfg
+    dest: /etc/haproxy/haproxy.cfg
+    validate: 'haproxy -f %s -c'
+  notify:
+  - reload haproxy
+
+# replace below with native exporter if/when haproxy >=2.0 is available
+- name: Download exporter 
+  get_url:
+    url: https://github.com/prometheus/haproxy_exporter/releases/download/v0.10.0/haproxy_exporter-0.10.0.linux-amd64.tar.gz
+    dest: /opt/haproxy.tar.gz
+  
+- name: Extract exporter
+  unarchive:
+    remote_src: yes
+    src: /opt/haproxy.tar.gz
+    dest: /usr/local/bin
+    extra_opts:
+    - '--wildcards'
+    - 'haproxy_exporter-0.10.0.linux-amd64/haproxy_exporter'
+    - '--strip=1'
+
+- name: Fix exporter ownership
+  file:
+    path: /usr/local/bin/haproxy_exporter
+    owner: root
+    group: root
+
+- name: Add exporter service
+  template:
+    src: haproxy_exporter.service
+    dest: /etc/systemd/system/haproxy_exporter.service
+
+- name: Enable exporter service
+  service:
+    name: haproxy_exporter
+    state: started
+    enabled: yes

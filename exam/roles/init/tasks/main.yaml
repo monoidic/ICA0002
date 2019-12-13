@@ -1,0 +1,31 @@
+---
+- name: Configure netplan
+  template:
+    src: netplan.yaml
+    dest: /etc/netplan/50-static-vbox.yaml
+  notify:
+  - netplan apply
+
+- name: Disable systemd-resolved
+  service:
+    name: systemd-resolved
+    state: stopped
+    enabled: no
+
+- name: Configure DNS
+  copy:
+    content: "nameserver 192.168.56.50\nnameserver 1.0.0.1\n"
+    dest: /etc/resolv.conf
+
+- name: Add ssh cert
+  authorized_key:
+    user: user
+    key: https://raw.githubusercontent.com/monoidic/pubkey/master/cert_25519.pub
+
+- name: Add passwordless sudo conf file
+  copy:
+    content: "%adm ALL=(ALL:ALL) NOPASSWD:ALL\n"
+    dest: /etc/sudoers.d/admin_nopass
+    mode: '0600'
+    owner: root
+    group: root

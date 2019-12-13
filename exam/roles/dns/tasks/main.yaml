@@ -1,0 +1,37 @@
+---
+
+- name: Install bind packages
+  apt:
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - bind9
+    - prometheus-bind-exporter
+
+- name: Configure bind options config
+  template:
+    src: named.conf.options.j2
+    dest: /etc/bind/named.conf.options
+    validate: 'named-checkconf %s'
+  notify:
+  - restart bind
+
+- name: Configure bind local config
+  template:
+    src: named.conf.local.j2
+    dest: /etc/bind/named.conf.local
+    validate: 'named-checkconf %s'
+  notify:
+  - restart bind
+
+- name: Update db hash
+  when: "dns_type == 'master'"
+  copy:
+    content: "{{ dns_vars|hash }}\n"
+    dest: "/etc/bind/db.{{ startup }}.hash"
+  notify:
+  - timestamp
+  - db update
+  - ptr db update
+  - bind update
+  - restart exporter

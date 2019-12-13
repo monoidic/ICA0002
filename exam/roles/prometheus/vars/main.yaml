@@ -1,0 +1,33 @@
+---
+sections:
+- name: prometheus
+  port: 9090
+  targets:
+  - localhost
+
+- name: nodes
+  port: 9100
+  targets:
+  - infra01.peril.ttu
+  - infra02.peril.ttu
+
+- name: mysql
+  port: 9104
+  targets:
+  - mysql.peril.ttu
+
+#- name: apache
+#  port: 9117
+#  targets:
+#  - www.peril.ttu
+
+- name: bind
+  port: 9119
+  targets:
+  - infra01.peril.ttu
+  - infra02.peril.ttu
+
+- name: haproxy
+  port: 9101
+  targets:
+  - www.peril.ttu

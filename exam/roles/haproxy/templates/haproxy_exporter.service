@@ -1,0 +1,8 @@
+[Unit]
+Description=HAProxy Prometheus exporter
+
+[Service]
+ExecStart=/usr/local/bin/haproxy_exporter
+
+[Install]
+WantedBy=multi-user.target

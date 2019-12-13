@@ -1,0 +1,45 @@
+- name: Install packages
+  apt:
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - mysql-server
+    - python3-pymysql
+    - prometheus-mysqld-exporter
+
+- name: Create WordPress database
+  mysql_db:
+    name: wordpress
+    config_file: /etc/mysql/debian.cnf
+
+- name: Add WordPress SQL user
+  mysql_user:
+    name: wordpress
+    password: "{{ sql_pass }}"
+    host: '%'
+    priv: "wordpress.*:SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,ALTER"
+    config_file: /etc/mysql/debian.cnf
+
+- name: Add Prometheus exporter SQL user
+  mysql_user:
+    name: exporter
+    password: "{{ sql_pass }}"
+    priv: "*.*:PROCESS,REPLICATION CLIENT"
+    config_file: /etc/mysql/debian.cnf
+
+- name: Add Prometheus exporter SQL config file
+  template:
+    src: my.cnf
+    dest: /var/lib/prometheus/.my.cnf
+    mode: "600"   
+    owner: prometheus
+  notify:
+  - restart mysqld-exporter
+
+- name: Allow external MySQL connections
+  replace:
+    path: /etc/mysql/mysql.conf.d/mysqld.cnf
+    regexp: '^(bind-address.*)'
+    replace: '# \1'
+  notify:
+  - restart mysqld

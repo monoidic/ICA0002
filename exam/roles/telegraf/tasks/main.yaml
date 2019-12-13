@@ -1,0 +1,24 @@
+---
+- name: Trust telegraf repo key
+  apt_key:
+    url: https://repos.influxdata.com/influxdb.key
+
+- name: Add telegraf repo
+  copy:
+    content: "deb https://repos.influxdata.com/ubuntu bionic stable\n"
+    dest: /etc/apt/sources.list.d/telegraf.list
+
+- name: Update apt cache
+  apt:
+
+- name: Install telegraf
+  apt:
+    name: telegraf
+    update_cache: yes
+
+- name: Configure telegraf
+  template:
+    src: telegraf.conf
+    dest: /etc/telegraf/telegraf.conf
+  notify:
+  - Restart telegraf

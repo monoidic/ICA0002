@@ -1,5 +1,5 @@
 $TTL	604800
-@	IN	SOA	peril.ttu. root.peril.ttu. (
+@	IN	SOA	{{ startup }}. root.{{ startup }}. (
 			{{ ts.stdout }}	; Serial
 			 604800		; Refresh
 			  86400		; Retry
@@ -7,10 +7,10 @@ $TTL	604800
 			 604800	)	; Negative Cache TTL
 ;
 {% for i in dns_vars %}
-{% if i.type in ['A', 'NS'] %}
-{{ i.name }}	IN	{{ i.type }}	{{ i.addr }}.{{ startup}}.
+{% if i.type == 'A' %}
+{{ i.name }}.{{ startup }}.	IN	A	{{ i.addr }}
 {% elif i.type == 'CNAME' %}
-{{ i.name }}.{{ startup}}.    IN      {{ i.type }}    {{ i.addr }}.{{ startup}}.
+{{ i.name }}.{{ startup }}.	IN	CNAME	{{ i.addr }}.{{ startup}}.
 {% else %}
 {{ i.name }}	IN	{{ i.type }}	{{ i.addr }}
 {% endif %}

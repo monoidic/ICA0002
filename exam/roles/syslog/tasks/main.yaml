@@ -1,0 +1,7 @@
+---
+- name: Configure rsyslog for telegraf
+  template:
+    src: 10-telegraf.conf
+    dest: /etc/rsyslog.d/10-telegraf.conf
+  notify:
+  - Restart rsyslog

@@ -1,0 +1,25 @@
+[coverage]
+Any git repos (including this one) would be pulled daily to the backup
+servers in order to preserve configuration data (DNS zones, initial setup,
+service configurations). The git protocol provides the needed integrity 
+checks and version history.
+
+Alongside code, data stored in both the MySQL and InfluxDB databases would
+be dumped daily for backups. This may contain private user data and should be
+handled in compliance with data protection regulations.
+
+Binary content (audiovisual), user-submitted or otherwise, would also have to
+be stored.
+
+[frequency]
+Backups would be performed daily (unless the boss complains), across all types
+of data.
+
+[retention]
+The backups would be preserved for a month.
+Incremental backups would be used, with full backups sometime between Sunday
+and Monday night during periods with low traffic.
+
+[verification]
+Scripted testing of backups would be implemented and performed after each
+full backup.

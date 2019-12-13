@@ -1,0 +1,25 @@
+---
+- name: Global configs
+  hosts: linux
+  become: yes
+  roles:
+  - dns
+  - syslog
+  - node_exporter
+
+- name: Set up infra01
+  hosts: infra01
+  become: yes
+  roles:
+  - wordpress
+  - telegraf
+
+- name: Set up infra02
+  hosts: infra02
+  become: yes
+  roles:
+  - mysql
+  - influxdb
+  - prometheus
+  - grafana
+  - haproxy

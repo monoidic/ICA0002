@@ -1,0 +1,15 @@
+---
+- name: Install required packages
+  apt:
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - docker.io
+    - python3-docker
+
+- name: Run grafana container
+  docker_container:
+    image: grafana/grafana
+    name: grafana
+    ports:
+    - 3000:3000

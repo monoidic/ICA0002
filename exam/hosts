@@ -1,0 +1,7 @@
+[legacy]
+legacy1 new_host=192.168.56.50 ansible_host=127.0.0.1 ansible_user=user ansible_python_interpreter=/usr/bin/python3 ansible_port=2222
+legacy2 new_host=192.168.56.51 ansible_host=127.0.0.1 ansible_user=user ansible_python_interpreter=/usr/bin/python3 ansible_port=2223
+
+[linux]
+infra01 dns_type=master slave_ip=192.168.56.51 master_ip=192.168.56.50 ansible_host=192.168.56.50 ansible_user=user ansible_python_interpreter=/usr/bin/python3
+infra02 dns_type=slave master_ip=192.168.56.50 ansible_host=192.168.56.51 ansible_user=user ansible_python_interpreter=/usr/bin/python3
