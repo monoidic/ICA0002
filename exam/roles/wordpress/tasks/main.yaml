@@ -10,9 +10,9 @@
 - name: Run wordpress docker image
   docker_container:
     image: wordpress
-    name: 'wp{{item}}'
+    name: 'wp{{ item }}'
     ports:
-    - "{{8080 + item}}:80"
+    - "{{ 8080 + item }}:80"
     env:
       WORDPRESS_DB_NAME: wordpress
       WORDPRESS_DB_USER: wordpress

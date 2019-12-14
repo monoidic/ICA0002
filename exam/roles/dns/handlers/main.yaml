@@ -2,9 +2,6 @@
   shell: date +%s
   register: ts
 
-#- name:  check bind conf
-#  shell: named-checkconf
-
 - name: db update
   template:
     src: db.startup.j2

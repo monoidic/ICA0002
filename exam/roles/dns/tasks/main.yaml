@@ -34,4 +34,9 @@
   - db update
   - ptr db update
   - bind update
-  - restart exporter
+
+- name: Enable exporter
+  service:
+    name: prometheus-bind-exporter
+    state: started
+    enabled: yes

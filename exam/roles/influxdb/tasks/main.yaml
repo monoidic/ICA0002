@@ -2,7 +2,3 @@
 - name: Install influxdb packages
   apt:
     name: ['influxdb', 'python3-requests', 'python3-influxdb']
-
-- name: Create log database
-  influxdb_database:
-    database_name: logs

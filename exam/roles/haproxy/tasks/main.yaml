@@ -12,26 +12,22 @@
   - reload haproxy
 
 # replace below with native exporter if/when haproxy >=2.0 is available
-- name: Download exporter 
+- name: Download exporter
   get_url:
     url: https://github.com/prometheus/haproxy_exporter/releases/download/v0.10.0/haproxy_exporter-0.10.0.linux-amd64.tar.gz
     dest: /opt/haproxy.tar.gz
-  
+
 - name: Extract exporter
   unarchive:
     remote_src: yes
     src: /opt/haproxy.tar.gz
     dest: /usr/local/bin
+    owner: root
+    group: root
     extra_opts:
     - '--wildcards'
     - 'haproxy_exporter-0.10.0.linux-amd64/haproxy_exporter'
     - '--strip=1'
-
-- name: Fix exporter ownership
-  file:
-    path: /usr/local/bin/haproxy_exporter
-    owner: root
-    group: root
 
 - name: Add exporter service
   template:

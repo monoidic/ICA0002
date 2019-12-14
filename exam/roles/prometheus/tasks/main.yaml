@@ -7,6 +7,7 @@
   template:
     src: prometheus.yml.j2
     dest: /etc/prometheus/prometheus.yml
+    validate: 'promtool check config %s'
   notify: restart prometheus
 
 - name: Start Prometheus

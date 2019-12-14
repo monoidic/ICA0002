@@ -10,3 +10,5 @@ wp_max_instances: 2
 # can be significantly increased
 
 wp_instance_count: 2
+
+ansible_python_interpreter: /usr/bin/python3

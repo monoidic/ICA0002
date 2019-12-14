@@ -3,5 +3,6 @@
   template:
     src: 10-telegraf.conf
     dest: /etc/rsyslog.d/10-telegraf.conf
+    validate: 'rsyslogd -N1 -f %s'
   notify:
   - Restart rsyslog
