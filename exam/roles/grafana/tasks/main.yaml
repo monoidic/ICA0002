@@ -13,3 +13,4 @@
     name: grafana
     ports:
     - 3000:3000
+    restart_policy: always

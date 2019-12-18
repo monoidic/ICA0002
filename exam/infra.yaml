@@ -23,3 +23,10 @@
   - prometheus
   - grafana
   - haproxy
+
+- post_tasks:
+  - name: Remove unneeded Wordpress containers
+    docker_container:
+      name: 'wp{{ item }}'
+      state: absent
+    loop: "{{ range(wp_max_instances-1, wp_instance_count-1, -1) | list }}"

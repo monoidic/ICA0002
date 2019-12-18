@@ -14,7 +14,7 @@
 
 - name: Configure DNS
   copy:
-    content: "nameserver 192.168.56.50\nnameserver 1.0.0.1\n"
+    content: "nameserver 192.168.56.50\nnameserver 192.168.56.51\nnameserver 1.0.0.1\n"
     dest: /etc/resolv.conf
 
 - name: Add ssh cert

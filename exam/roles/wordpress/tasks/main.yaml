@@ -18,6 +18,7 @@
       WORDPRESS_DB_USER: wordpress
       WORDPRESS_DB_PASSWORD: '{{ sql_pass }}'
       WORDPRESS_DB_HOST: mysql.peril.ttu
+    restart_policy: always
   loop: "{{ range(wp_instance_count) | list }}"
 
 #- name: Add apache site conf for WordPress
