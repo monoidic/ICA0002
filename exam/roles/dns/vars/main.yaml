@@ -14,10 +14,13 @@ startup: peril.ttu
 dns_vars:
   - name: "{{ startup }}."
     type: NS
-    addr: ns1
-  - name: "{{ startup }}."
-    type: NS
-    addr: ns2
+    addr: ns
+  - name: ns
+    type: A
+    addr: 192.168.56.50
+  - name: ns
+    type: A
+    addr: 192.168.56.51
   - name: infra01
     type: A
     addr: 192.168.56.50
