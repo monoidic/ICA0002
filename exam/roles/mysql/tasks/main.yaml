@@ -23,7 +23,7 @@
 - name: Add Prometheus exporter SQL user
   mysql_user:
     name: exporter
-    password: "{{ sql_pass }}"
+    password: "{{ sql_exporter_pass }}"
     priv: "*.*:PROCESS,REPLICATION CLIENT"
     config_file: /etc/mysql/debian.cnf
 
